@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Container, Form } from "react-bootstrap";
-import { addEvent } from "../service/api";
-import { useNavigate } from "react-router-dom";
+import { editEvent, getallEvents } from "../service/api";
+import { useNavigate, useParams } from "react-router-dom";
 
-function AddEvent() {
+function EditEvent() {
+  const { id } = useParams();
+
   const navigate = useNavigate();
   const [eventItem, setEventItem] = useState({
     name: "",
@@ -15,6 +17,16 @@ function AddEvent() {
     like: false,
   });
 
+  useEffect(() => {
+    const fetchEvent = async (eventId) => {
+      const eventResult = await getallEvents(eventId);
+      console.log(eventResult.data);
+      setEventItem(eventResult.data);
+    };
+
+    fetchEvent(id);
+  }, [id]);
+
   const onValueChange = (e) => {
     setEventItem({ ...eventItem, [e.target.name]: e.target.value });
   };
@@ -23,16 +35,16 @@ function AddEvent() {
     setEventItem({ ...eventItem, [e.target.name]: e.target.files[0].name });
   };
 
-  const AddEvent = async () => {
-    const eventResult = await addEvent(eventItem);
-    if (eventResult.status == 201) {
+  const EditEvent = async (id) => {
+    const eventResult = await editEvent(id, eventItem);
+    if (eventResult.status == 200) {
       navigate("/events");
     }
   };
 
   return (
     <Container style={{ marginTop: "30px" }}>
-      <h2>Add a new Event to your Event List</h2>
+      <h2>Edit Event </h2>
       <Form>
         <Form.Group className="mb-3">
           <Form.Label>Name</Form.Label>
@@ -77,8 +89,13 @@ function AddEvent() {
           <Form.Label>Image</Form.Label>
           <Form.Control type="file" name="img" onChange={(e) => onFile(e)} />
         </Form.Group>
-        <Button variant="primary" onClick={AddEvent}>
-          Add an Event
+        <Button
+          variant="success"
+          onClick={() => {
+            EditEvent(id);
+          }}
+        >
+          Update Event
         </Button>
         <Button
           variant="secondary"
@@ -93,4 +110,4 @@ function AddEvent() {
   );
 }
 
-export default AddEvent;
+export default EditEvent;
