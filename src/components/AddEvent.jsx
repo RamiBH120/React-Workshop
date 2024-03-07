@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import { Button, Container, Form } from "react-bootstrap";
 import { addEvent } from "../service/api";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addEventReducer } from "../redux/slices/eventsSlice";
 
 function AddEvent() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [eventItem, setEventItem] = useState({
     name: "",
@@ -25,6 +28,8 @@ function AddEvent() {
 
   const AddEvent = async () => {
     const eventResult = await addEvent(eventItem);
+
+    dispatch(addEventReducer(eventItem));
     if (eventResult.status == 201) {
       navigate("/events");
     }

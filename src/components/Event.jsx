@@ -1,9 +1,7 @@
 import { useState } from "react";
-import { Nav } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
-import { NavLink, useNavigate } from "react-router-dom";
-import { deleteEvent } from "../service/api";
+import { Link, NavLink } from "react-router-dom";
 
 function Event(props) {
   const [event, setEvent] = useState(props.event);
@@ -61,17 +59,14 @@ function Event(props) {
           >
             Book an event
           </Button>
-          <Button
-            variant="danger"
-            onClick={() => {
-              props.deleteEvent(event.id);
-            }}
-          >
-            Delete Event
+
+          <Button variant="danger" onClick={() => props.delete(event.id)}>
+            Delete
           </Button>
-          <Nav.Link as={NavLink} to={`edit/${event.id}`}>
-            <Button variant="secondary">Edit Event</Button>
-          </Nav.Link>
+
+          <Button variant="success">
+            <Link to={`/events/update/${event.id}`}>Update</Link>
+          </Button>
         </Card.Body>
       </Card>
     </>
