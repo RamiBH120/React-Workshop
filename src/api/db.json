@@ -13,9 +13,9 @@
     {
       "id": "04aa",
       "name": "test",
-      "description": "aa",
+      "description": "aappssuuuu",
       "img": "event2.jpg",
-      "price": "4",
+      "price": "144",
       "nbTickets": "011",
       "nbParticipants": 0,
       "like": false
@@ -36,7 +36,59 @@
       "description": "aaa",
       "img": "sold_out.png",
       "price": "7",
-      "nbTickets": "7",
+      "nbTickets": "77",
+      "nbParticipants": 0,
+      "like": false
+    },
+    {
+      "id": "d2bc",
+      "name": "Dev Web",
+      "description": "",
+      "img": "",
+      "price": "10",
+      "nbTickets": "11",
+      "nbParticipants": 0,
+      "like": false
+    }
+  ],
+  "wishlist": [
+    {
+      "id": "9a53",
+      "name": "ee",
+      "description": "ee",
+      "img": "event3.jpg",
+      "price": "44",
+      "nbTickets": "11",
+      "nbParticipants": 0,
+      "like": false
+    },
+    {
+      "id": "e0f7",
+      "name": "aa",
+      "description": "aaa",
+      "img": "sold_out.png",
+      "price": "7",
+      "nbTickets": "77",
+      "nbParticipants": 0,
+      "like": false
+    },
+    {
+      "id": "04aa",
+      "name": "test",
+      "description": "aappssuuuu",
+      "img": "event2.jpg",
+      "price": "144",
+      "nbTickets": "011",
+      "nbParticipants": 0,
+      "like": false
+    },
+    {
+      "id": "d2bc",
+      "name": "Dev Web",
+      "description": "",
+      "img": "",
+      "price": "10",
+      "nbTickets": "11",
       "nbParticipants": 0,
       "like": false
     }

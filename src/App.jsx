@@ -8,6 +8,8 @@ import AddEvent from "./components/AddEvent";
 import UpdateEvent from "./components/UpdateEvent";
 import { fetchEvents } from "./redux/slices/eventsSlice";
 import { useDispatch } from "react-redux";
+import Wishlist from "./components/Wishlist";
+import { fetchWishlist } from "./redux/slices/wishlistSlice";
 
 const Events = React.lazy(() => import("./components/Events"));
 function App() {
@@ -29,6 +31,14 @@ function App() {
             <Route path="update/:id" element={<UpdateEvent />} />
 
             <Route path="details/:id" element={<EventDetails />} />
+          </Route>
+
+          <Route path="wishlist">
+            <Route
+              index
+              loader={dispatch(fetchWishlist())}
+              element={<Wishlist />}
+            />
           </Route>
 
           <Route path="*" element={<NotFound />} />

@@ -3,13 +3,10 @@ import Event from "./Event";
 import Row from "react-bootstrap/Row";
 import Alert from "react-bootstrap/Alert";
 import { useEffect, useState } from "react";
-import { deleteEvent, getallEvents } from "../service/api";
-import { useDispatch, useSelector } from "react-redux";
-import { deleteEventReducer, selectEvents } from "../redux/slices/eventsSlice";
+import { useSelector } from "react-redux";
+import { selectEvents } from "../redux/slices/eventsSlice";
 function Events() {
   const [eventsData] = useSelector(selectEvents);
-
-  const dispatch = useDispatch();
 
   const [isShowAlert, setIsShowAlert] = useState(false);
   const [isWelcome, setIsWelcome] = useState(true);
@@ -29,27 +26,17 @@ function Events() {
     setTimeout(() => setIsShowAlert(false), 2000);
   };
 
-  const handleDelete = async (eventId) => {
-    await deleteEvent(eventId);
-
-    dispatch(deleteEventReducer(eventId));
-  };
   return (
     <>
       {isWelcome && (
-        <Alert style={{ width: "70%", marginBottom: 40 }} variant="success">
+        <Alert style={{ marginBottom: 40 }} variant="success">
           Hey welcome to Esprit Events
         </Alert>
       )}
       <Container>
         <Row>
           {eventsData.map((event, index) => (
-            <Event
-              key={index}
-              event={event}
-              showAlert={showAlert}
-              delete={handleDelete}
-            />
+            <Event key={index} event={event} showAlert={showAlert} />
           ))}
         </Row>
 

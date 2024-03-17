@@ -1,12 +1,16 @@
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
+import { useDispatch } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
+import { deleteEventReducer } from "../redux/slices/eventsSlice";
+import { addWishlist, deleteEvent } from "../service/api";
+import { addWishlistReducer } from "../redux/slices/wishlistSlice";
 
 function Event(props) {
   const [event, setEvent] = useState(props.event);
 
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const buy = () => {
     props.showAlert();
@@ -24,13 +28,28 @@ function Event(props) {
     }));
   };
 
-  const deleteItem = async () => {
+  const handleDelete = async () => {
     try {
-      const respo = await deleteEvent(props.event.id);
-      console.log(respo);
-      console.log("deleteItem");
-    } catch (e) {
-      console.log(e);
+      const resp = await deleteEvent(event.id);
+      dispatch(deleteEventReducer(event.id));
+      if (resp.status === 200) {
+        console.log("deleted successfully! ");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const addToWishlist = async () => {
+    try {
+      const resp = await addWishlist(event);
+      dispatch(addWishlistReducer(event));
+
+      if (resp.status === 201) {
+        alert("event added successfully to your wishlist!");
+      }
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -60,12 +79,16 @@ function Event(props) {
             Book an event
           </Button>
 
-          <Button variant="danger" onClick={() => props.delete(event.id)}>
+          <Button variant="danger" onClick={handleDelete}>
             Delete
           </Button>
 
-          <Button variant="success">
+          <Button variant="warning">
             <Link to={`/events/update/${event.id}`}>Update</Link>
+          </Button>
+
+          <Button variant="success" onClick={addToWishlist}>
+            ADD TO WISHLIST
           </Button>
         </Card.Body>
       </Card>

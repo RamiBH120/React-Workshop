@@ -2,41 +2,48 @@ import React, { useEffect, useState } from "react";
 import { Button, Container, Form } from "react-bootstrap";
 import { editEvent, getallEvents } from "../service/api";
 import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectEvent,
+  selectSelectedEvent,
+  updateEventReducer,
+} from "../redux/slices/eventsSlice";
 
 function EditEvent() {
   const { id } = useParams();
 
+  const dispatch = useDispatch();
+
+  const { selectedEvent } = useSelector(selectSelectedEvent);
+
   const navigate = useNavigate();
-  const [eventItem, setEventItem] = useState({
-    name: "",
-    description: "",
-    img: "",
-    price: 0,
-    nbTickets: 0,
-    nbParticipants: 0,
-    like: false,
-  });
 
   useEffect(() => {
     const fetchEvent = async (eventId) => {
       const eventResult = await getallEvents(eventId);
       console.log(eventResult.data);
-      setEventItem(eventResult.data);
+      //setEventItem(eventResult.data);
+      dispatch(selectEvent(eventResult.data));
     };
 
     fetchEvent(id);
   }, [id]);
 
   const onValueChange = (e) => {
-    setEventItem({ ...eventItem, [e.target.name]: e.target.value });
+    dispatch(
+      selectEvent({ ...selectedEvent, [e.target.name]: e.target.value })
+    );
   };
 
   const onFile = (e) => {
-    setEventItem({ ...eventItem, [e.target.name]: e.target.files[0].name });
+    dispatch(
+      selectEvent({ ...selectedEvent, [e.target.name]: e.target.files[0].name })
+    );
   };
 
   const EditEvent = async (id) => {
-    const eventResult = await editEvent(id, eventItem);
+    const eventResult = await editEvent(id, selectedEvent);
+    dispatch(updateEventReducer(eventResult.data));
     if (eventResult.status == 200) {
       navigate("/events");
     }
@@ -51,7 +58,7 @@ function EditEvent() {
           <Form.Control
             onChange={(e) => onValueChange(e)}
             name="name"
-            value={eventItem.name}
+            value={selectedEvent.name}
             type="text"
             placeholder="Enter a Name"
           />
@@ -60,7 +67,7 @@ function EditEvent() {
           <Form.Label>Description</Form.Label>
           <Form.Control
             onChange={(e) => onValueChange(e)}
-            value={eventItem.description}
+            value={selectedEvent.description}
             as="textarea"
             rows={3}
             placeholder="Enter description "
@@ -71,7 +78,7 @@ function EditEvent() {
           <Form.Label>Price</Form.Label>
           <Form.Control
             onChange={(e) => onValueChange(e)}
-            value={eventItem.price}
+            value={selectedEvent.price}
             type="number"
             name="price"
           />
@@ -80,7 +87,7 @@ function EditEvent() {
           <Form.Label>Number of Tickets</Form.Label>
           <Form.Control
             onChange={(e) => onValueChange(e)}
-            value={eventItem.nbTickets}
+            value={selectedEvent.nbTickets}
             type="number"
             name="nbTickets"
           />
